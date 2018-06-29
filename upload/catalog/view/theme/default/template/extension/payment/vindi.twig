@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-md-4">
+
+        <form class="" id="payment-form">
+
+            <fieldset>
+                <legend>{{ text_credit_card }}</legend>
+                <div class="form-group required col-sm-12">
+                    <label class="control-label" for="card-holder">Nome impresso no cartão</label>
+                    <div class="input-group">
+                        <div style="width: 25em;"> 
+                            <input type="text" class="form-control" id="card-holder" name="card-holder"
+                            placeholder="Nome impresso no cartão" required="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group required col-sm-12">
+                    <label class="control-label" for="card-flag">Bandeira do cartão</label>
+                    <div style="width: 16em;"> 
+                        <select class="form-control" id="card-flag" name="card-flag" required="" autofocus="">
+                            <option value="0">Selecione a Bandeira</option>
+                            {% for payment_company in payment_companies %}
+                                <option value="{{ payment_company.code }}">
+                                    {{ payment_company.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group required col-sm-12">
+                    <label class="control-label" for="card-number">Número do cartão</label>
+                    <div style="width: 16em;"> 
+                        <div class="input-group">
+                            <input type="text" class="form-control" maxlength="16" id="card-number" name="card-number"
+                            placeholder="•••• •••• •••• ••••" required="">
+                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group required col-sm-6">
+                    <label for="card-expiry-month">Data de expiração</label>
+                    <div class="row">
+                        <div class="col-xs-6 col-lg-6">
+                            <div style="width: 4em;"> 
+                                <input type="text" class="form-control" name="card-expiry-month" id="card-expiry-month"
+                                placeholder="MM" required="" data-stripe="exp_month" maxlength="2">
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-lg-6">
+                            <div style="width: 4em;"> 
+                                <input type="text" class="form-control" name="card-expiry-year" id="card-expiry-year"
+                                placeholder="AA" required="" data-stripe="exp_year" maxlength="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group required col-sm-6">
+                    <label class="control-label" for="card-cvc">CVV</label>
+                    <div class="">
+                        <div style="width: 5em;"> 
+                            <input type="text" name="card-cvc" value="" placeholder="CVV" id="card-cvc"
+                            class="form-control" data-stripe="cvc" maxlength="4"/>
+                        </div>
+                    </div>
+                </div>
+
+
+            </fieldset>
+        </form>
+
+    </div>
+</div>
+
+
+<div class="buttons">
+    <div class="pull-right">
+        <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}"
+               class="btn btn-primary"/>
+    </div>
+</div>
+<script type="text/javascript"><!--
+
+    $('#button-confirm').bind('click', function () {
+
+        var $form = $('#payment-form'),
+            $button_confirm = $('#button-confirm'),
+            $card_holder = $('#card-holder').val(),
+            $card_expiry_month = $('#card-expiry-month').val(),
+            $card_expiry_year = $('#card-expiry-year').val(),
+            $card_number = $('#card-number').val(),
+            $card_cvc = $('#card-cvc').val(),
+            $card_flag = $('#card-flag').val();
+
+
+        $button_confirm.attr('disabled', true);
+        $form.before('<div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_wait }} </div>');
+
+        $.ajax({
+            url: 'index.php?route=extension/payment/vindi/send',
+            type: 'post',
+            data: {
+                holder_name: $card_holder,
+                card_expiration: $card_expiry_month + '/' + $card_expiry_year,
+                card_number: $card_number,
+                card_cvv: $card_cvc,
+                payment_company_code: $card_flag
+            },
+            dataType: 'json',
+            complete: function () {
+                $button_confirm.prop('disabled', false);
+            }})
+            .done(function () {
+                window.location.href = 'index.php?route=checkout/success';
+            })
+            .fail(function () {
+                window.location.href = 'index.php?route=checkout/failure';
+            });
+    });
+    //--></script>

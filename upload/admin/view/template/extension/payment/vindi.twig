@@ -1,0 +1,170 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-vindi-hosted-checkout" data-toggle="tooltip" title="{{ button_save }}"
+                        class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>&nbsp;{{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i>&nbsp;{{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="alert alert-info"><i class="fa fa-exclamation-circle"></i>&nbsp;{{ text_notification_ssl }}</div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i>&nbsp;{{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-vindi-hosted-checkout"
+                      class="form-horizontal">
+                    <ul class="nav nav-tabs">
+                        <li><a href="#tab-setting" data-toggle="tab"><i class="fa fa-gear"></i>&nbsp;{{ tab_setting }}
+                            </a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane show" id="tab-setting">
+                            <fieldset>
+                                <legend>{{ text_general_settings }}</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="select-status">{{ entry_status }}</label>
+                                    <div class="col-sm-10">
+                                    <div style="width: 20%;">
+                                        <select name="payment_vindi_status" id="select-status" class="form-control">
+                                            {% if payment_vindi_status %}
+                                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                                <option value="0">{{ text_disabled }}</option>
+                                            {% else %}
+                                                <option value="1">{{ text_enabled }}</option>
+                                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                            {% endif %}
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"><span data-toggle="tooltip"
+                                    title="{{ help_display_name }}">{{ entry_display_name }}</span></label>
+                                    <div class="col-sm-10"><div style="width: 50%;">
+                                        {% for language in languages %}
+                                            <div class="input-group form-control-static">
+                                                <div class="input-group-addon" data-toggle="tooltip"
+                                                     title="{{ language.name }}"><img src="{{ language.image }}"
+                                                    alt="{{ language.name }}"/>
+                                                </div>
+                                                
+                                                    <input type="text"
+                                                    name="payment_vindi_display_name[{{ language.language_id }}]"
+                                                    value="{{ payment_vindi_display_name[language.language_id] ?? default_display_name }}"
+                                                    placeholder="{{ entry_display_name }}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                        <label class="col-sm-2 control-label" for="input-api-key"><span
+                                            data-toggle="tooltip"
+                                            title="{{ help_api_key }}">{{ entry_api_key }}</span></label>
+                                        <div class="col-sm-10">
+                                            <div style="width: 50%;">
+                                                <input type="text" name="payment_vindi_api_key"
+                                                   value="{{ payment_vindi_api_key }}" placeholder="{{ entry_api_key }}"
+                                                   id="input-api-key" class="form-control"/>
+                                                    {% if error_api_key %}
+                                                    <div class="text-danger">{{ error_api_key }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label class="col-sm-2 control-label" for="select-gateway"><span
+                                                data-toggle="tooltip"
+                                                title="{{ help_gateway }}">{{ entry_gateway }}</span></label>
+                                    <div class="col-sm-10">
+                                        <div style="width: 20%;">
+                                            <select name="payment_vindi_gateway" id="select-gateway"
+                                                class="form-control form-control-static">
+                                                {% for gateway in gateways %}
+                                                <option value="{{ gateway.code }}" {{ gateway.code == payment_vindi_gateway ? 'selected' }}>{{ gateway.text }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="select-debug-log"><span
+                                                data-toggle="tooltip"
+                                                title="{{ help_debug_log }}">{{ entry_debug_log }}</span></label>
+                                    <div class="col-sm-10">
+                                        <div style="width: 20%;">
+                                            <select name="payment_vindi_debug_log" id="select-debug-log"
+                                                    class="form-control">
+                                                {% if payment_vindi_debug_log %}
+                                                    <option value="0">{{ text_disabled }}</option>
+                                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                                {% else %}
+                                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                                    <option value="1">{{ text_enabled }}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"
+                                           for="input-sort-order">{{ entry_sort_order }}</label>
+                                    <div class="col-sm-10">
+                                        <div style="width: 20%;">
+                                        <input type="text" name="payment_vindi_sort_order"
+                                           value="{{ payment_vindi_sort_order }}"
+                                           placeholder="{{ entry_sort_order }}" id="input-sort-order"
+                                           class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.text-danger').each(function () {
+            $(this).closest('.form-group').addClass('has-error');
+        });
+
+
+        $('.show_hide_credential').click(function (e) {
+            e.preventDefault();
+            var input = $(this).closest('.input-group').find('input');
+
+            if ($(input).attr('type') == 'text') {
+                $(input).attr('type', 'password');
+            } else {
+                $(input).attr('type', 'text');
+            }
+        });
+    });
+</script>
+{{ footer }} 
