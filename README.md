@@ -46,7 +46,7 @@ Todas as informações sobre cada release pode ser  [CHANGELOG.md](CHANGELOG.md)
 
 # Créditos
 - [Vindi](https://github.com/vindi)
-- [Todos os Contribuidores](https://github.com/vindi/vindi-woocommerce-subscriptions/contributors)
+- [Todos os Contribuidores](https://github.com/vindi/vindi-opencart3/graphs/contributors)
 
 # Licença
 GNU GPLv3. Por favor, veja o [Arquivo de Licença](LICENSE) para mais informações.
