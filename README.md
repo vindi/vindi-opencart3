@@ -2,9 +2,9 @@
 
 # Vindi - Opencart 3.x.x
 
-[![StyleCI](https://github.styleci.io/repos/138790516/shield?branch=master)](https://github.styleci.io/repos/138790516)
-[![Build Status](https://scrutinizer-ci.com/g/rtakauti/vindi-opencart/badges/build.png?b=master)](https://scrutinizer-ci.com/g/rtakauti/vindi-opencart/build-status/master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/rtakauti/vindi-opencart/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![StyleCI](https://github.styleci.io/repos/139198671/shield?branch=master)](https://github.styleci.io/repos/139198671)
+[![Build Status](https://scrutinizer-ci.com/g/vindi/vindi-opencart3/badges/build.png?b=master)](https://scrutinizer-ci.com/g/vindi/vindi-opencart3/build-status/master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/vindi/vindi-opencart3/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
 ## Descrição
 O **Vindi Opencart** oferece uma solução para pagamentos únicos com cartão de crédito. Basta ter [uma conta habilitada na Vindi](https://app.vindi.com.br/prospects/new), para começar a cobrar seus clientes.
