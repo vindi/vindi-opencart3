@@ -31,7 +31,7 @@ class ControllerExtensionPaymentVindi extends Controller
 
         return $this->load->view('extension/payment/vindi', $data);
     }
-    
+
     public function send()
     {
         $this->load->model('checkout/order');
