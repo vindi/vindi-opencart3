@@ -46,7 +46,7 @@ class ControllerExtensionPaymentVindi extends Controller
 
         $bill = $this->model_extension_payment_vindi->createBill($this->model_extension_payment_vindi->addCustomer(),
             (float) $this->cart->session->data['shipping_method']['cost']);
-        if (!array_key_exists('errors', $bill)) {
+        if (!array_key_exists('errors', $bill) && $bill['bill']['status'] === 'paid') {
             $http = 'HTTP/1.1 200 Success';
             $header = 'Content-Type: application/json';
             $message = ['status' => 'ok'];
