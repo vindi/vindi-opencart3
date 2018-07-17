@@ -1,7 +1,4 @@
-# Notas do versionamento
+# Notas das versões
 
-Todas as mudanças notáveis são listadas cronologicamente neste arquivo, obs: a última versão em primeiro.
-
-
-## 1.0.0 - 29/06/2018
+## [1.0.0 - 29/06/2018](https://github.com/vindi/vindi-opencart3/releases/tag/1.0.0)
 - Versão inicial
