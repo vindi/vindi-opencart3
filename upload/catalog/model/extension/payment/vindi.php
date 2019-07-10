@@ -4,6 +4,7 @@ class ModelExtensionPaymentVindi extends Model
 {
     private $api_version = 'v1';
     private $extension_version = '1.0.0';
+    private $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
 
     public function getMethod()
     {
@@ -14,7 +15,9 @@ class ModelExtensionPaymentVindi extends Model
 
             $method_data = [
                 'code'       => 'vindi',
-                'title'      => !empty($title_config[$this->config->get('config_language_id')]) ? $title_config[$this->config->get('config_language_id')] : 'Vindi OpenCart',
+                'title'      => ! empty(
+                    $title_config[$this->config->get('config_language_id')]
+                ) ? $title_config[$this->config->get('config_language_id')] : 'Vindi OpenCart',
                 'terms'      => '',
                 'sort_order' => $this->config->get('payment_vindi_sort_order'),
             ];
@@ -25,18 +28,17 @@ class ModelExtensionPaymentVindi extends Model
 
     public function api($api_method, $data = [], $method = 'GET')
     {
-        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
         $this->load->language('extension/payment/vindi');
-        $gateway = $this->getGateway().'/api/'.$this->getApiVersion();
-        $url = $gateway.$this->config->get('payment_vindi_merchant').'/'.$api_method;
+        $gateway = "$this->getGateway()/api/$this->getApiVersion()";
+        $url = "$gateway$this->config->get('payment_vindi_merchant')/$api_method";
         $curl_options = [
             CURLOPT_URL            => $url,
             CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
-            CURLOPT_USERPWD        => $this->config->get('payment_vindi_api_key').':',
+            CURLOPT_USERPWD        => "$this->config->get('payment_vindi_api_key'):",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
-                'User-Agent: OpenCart/'.$this->extension_version."; {$host}",
+                "User-Agent: OpenCart/$this->extension_version; $this->host",
             ],
             CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
         ];
@@ -97,40 +99,48 @@ class ModelExtensionPaymentVindi extends Model
     public function addOrderHistory($order_history)
     {
         $this->load->model('checkout/order');
-        $this->model_checkout_order->addOrderHistory($order_history['order_id'], $order_history['order_status_id'],
-            $order_history['message']);
+        $this->model_checkout_order->addOrderHistory(
+            $order_history['order_id'],
+            $order_history['order_status_id'],
+            $order_history['message']
+        );
     }
 
-    public function addCustomer()
+    public function findOrCreateCustomer()
     {
-        $customerVindi = $this->api('customers/?page=1&query=code%3D'.$this->customer->getId())['customers'][0];
-        if (empty($customerVindi)) {
-            $customerVindi = $this->api('customers/', [
-                'name'  => $this->customer->getFirstName().' '.$this->customer->getLastName(),
-                'email' => $this->customer->getEmail(),
-                'code'  => $this->customer->getId(),
-            ], 'POST')[0];
+        $internalCustomerId = $this->customer->getId();
+        $vindiCustomerCode = $this->vindiCode($internalCustomerId);
+        $customerVindi = $this->api(
+            "customers/?page=1&query=code%3D$vindiCustomerCode"
+        )['customers'];
+
+        if (empty(reset($customerVindi))) {
+            $customerVindi = $this->api(
+                'customers/', [
+                    'name'  => "$this->customer->getFirstName() $this->customer->getLastName()",
+                    'email' => $this->customer->getEmail(),
+                    'code'  => $vindiCustomerCode,
+                ],
+            'POST');
         }
 
-        return $customerVindi;
+        return reset($customerVindi);
     }
 
-    public function createBill(array $customer, $shipping)
+    public function createBill(array $customer, $order)
     {
-        $total = $this->model_checkout_order->getOrder($this->cart->session->data['order_id'])['total'];
-
         return $this->api('bills', [
             'customer_id'         => $customer['id'],
             'installments'        => 1,
             'payment_method_code' => 'credit_card',
             'bill_items'          => [
                 [
-                    'product_code' => 'opencart_product_tax',
-                    'amount'       => ($total - $shipping),
+                    'product_code' => 'opencart_product',
+                    'amount'       => ($order['total'] - $this->shippingAmount()),
                 ],
                 [
                     'product_code' => 'opencart_shipping',
-                    'amount'       => $shipping,
+                    'amount'       => $this->shippingAmount(),
                 ],
             ],
             'payment_profile' => [
@@ -146,11 +156,25 @@ class ModelExtensionPaymentVindi extends Model
 
     public function getPaymentCompanies($paymentMethod)
     {
-        return !empty($paymentMethods = $this->api('payment_methods/?page=1&query=code%3D'.$paymentMethod)['payment_methods']) ? $paymentMethods[0]['payment_companies'] : [
-            [
+        return ! empty(
+            $paymentMethods = $this->api(
+                "payment_methods/?page=1&query=code%3D$paymentMethod['payment_methods']"
+            ) ? reset($paymentMethods)['payment_companies'] : array(array(
                 'name' => 'Erro ao retornar companhias',
                 'code' => 'erro',
-            ],
-        ];
+            ));
+        );
+    }
+
+    private function shippingAmount()
+    {
+        return (float) $this->cart->session->data['shipping_method']['cost'];
+    }
+
+    private function vindiCode($uniqueId)
+    {
+        $chars = [".", ",", "-", "/"];
+        $prefix = str_replace($chars, "_", $this->host);
+        return "$prefix-$uniqueId";
     }
 }

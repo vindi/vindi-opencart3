@@ -79,8 +79,8 @@ class ModelExtensionPaymentVindi extends Model
     public function addProduct()
     {
         $this->api('products/', [
-            'name'           => 'OpenCart Produto Tax',
-            'code'           => 'opencart_product_tax',
+            'name'           => 'OpenCart Produto',
+            'code'           => 'opencart_product',
             'status'         => 'active',
             'pricing_schema' => ['price' => 0],
         ], 'POST');
