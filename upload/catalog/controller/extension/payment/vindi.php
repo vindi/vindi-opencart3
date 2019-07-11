@@ -1,14 +1,9 @@
 <?php
+define("ORDER_STATUSES", ['success' => 2, 'rejected' => 9]);
+define("HTTP_STATUSES", ['success' => 'HTTP/1.1 200 Success', 'rejected' => 'HTTP/1.1 402 Fail']);
 
 class ControllerExtensionPaymentVindi extends Controller
 {
-    define(
-        "ORDER_STATUSES", ['success' => 15, 'rejected' => 7]
-    );
-    define(
-        "HTTP_STATUSES", ['success' => 'HTTP/1.1 200 Success', 'rejected' => 'HTTP/1.1 402 Fail']
-    );
-
     public function index()
     {
         $payment_methods = null;
@@ -29,7 +24,7 @@ class ControllerExtensionPaymentVindi extends Controller
         $this->loadCheckoutModules();
 
         $header = 'Content-Type: application/json';
-        $orderStatusId = ORDER_STATUSES['rejected'];
+        $order_status_id = ORDER_STATUSES['rejected'];
         $http = HTTP_STATUSES['rejected'];
         $message = ['error' => 'Houve um erro ao transacionar'];
 
@@ -40,11 +35,15 @@ class ControllerExtensionPaymentVindi extends Controller
 
         if (!array_key_exists('errors', $bill) && $bill['bill']['status'] === 'paid') {
             $http = HTTP_STATUSES['success'];
-            $orderStatusId = ORDER_STATUSES['success'];
+            $order_status_id = ORDER_STATUSES['success'];
             $message = ['status' => 'success'];
         }
 
-        $this->model_checkout_order->addOrderHistory($this->cart->session->data['order_id'], $orderStatusId,$this->language->get('text_callback'));
+        $this->model_checkout_order->addOrderHistory(
+            $this->cart->session->data['order_id'],
+            $order_status_id,
+            $this->language->get('text_callback')
+        );
         $this->response->addHeader($http);
         $this->response->addHeader($header);
         $this->response->setOutput(json_encode($message));
