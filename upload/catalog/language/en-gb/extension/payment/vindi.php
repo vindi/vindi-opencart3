@@ -24,7 +24,7 @@ $_['error_transaction_logged'] = 'Error: Transaction is already logged.';
 // Warning
 $_['warning_test_mode'] = 'Warning: Vindi Payment Gateway Services is running in test mode. Note: Test orders above &#36;100 may not get processed.';
 
-$_['text_title'] = 'Credit or Debit Card (Processed securely by Stripe)';
+$_['text_title'] = 'Credit or Debit Card (Processed securely by Vindi)';
 $_['text_wait'] = 'Validating your credit card...';
 $_['text_credit_card'] = 'Credit Card Details';
 
