@@ -23,26 +23,28 @@ class ControllerExtensionPaymentVindi extends Controller
     {
         $this->loadCheckoutModules();
 
-        $header = 'Content-Type: application/json';
-        $order_status_id = ORDER_STATUSES['rejected'];
-        $http = HTTP_STATUSES['rejected'];
-        $message = ['error' => 'Houve um erro ao transacionar'];
-
         $bill = $this->model_extension_payment_vindi->createBill(
             $this->model_extension_payment_vindi->findOrCreateCustomer(),
             $this->model_checkout_order->getOrder($this->cart->session->data['order_id'])
         );
 
-        if (!array_key_exists('errors', $bill) && $bill['bill']['status'] === 'paid') {
-            $http = HTTP_STATUSES['success'];
-            $order_status_id = ORDER_STATUSES['success'];
-            $message = ['status' => 'success'];
+        $header = 'Content-Type: application/json';
+        $http = HTTP_STATUSES['success'];
+        $order_status_id = ORDER_STATUSES['success'];
+        $message = ['comment' => 'O Pagamento foi confirmado com sucesso'];
+
+        if (array_key_exists('errors', $bill) || $bill['bill']['status'] != 'paid')
+        {
+            $order_status_id = ORDER_STATUSES['rejected'];
+            $http = HTTP_STATUSES['rejected'];
+            $message = ['comment' => 'Houve um erro ao transacionar'];
+            $this->model_extension_payment_vindi->cancelBill($bill['bill']['id']);
         }
 
         $this->model_checkout_order->addOrderHistory(
             $this->cart->session->data['order_id'],
             $order_status_id,
-            $this->language->get('text_callback')
+            $message['comment']
         );
         $this->response->addHeader($http);
         $this->response->addHeader($header);
