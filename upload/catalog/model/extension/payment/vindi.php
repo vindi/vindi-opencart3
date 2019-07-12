@@ -53,18 +53,17 @@ class ModelExtensionPaymentVindi extends Model
             $headers[CURLOPT_POSTFIELDS] = json_encode($body);
         } elseif ($method == 'PUT') {
             $headers[CURLOPT_PUT] = true;
-
             $write_data = json_encode($body);
-
             $put_fd = tmpfile();
             fwrite($put_fd, $write_data);
             fseek($put_fd, 0);
-
             $headers[CURLOPT_INFILE] = $put_fd;
             $headers[CURLOPT_INFILESIZE] = strlen($write_data);
-        } else {
+        } elseif ($method == 'GET') {
             $url .= '?' . http_build_query($body);
             $headers[CURLOPT_URL] = $url;
+        } else {
+            $headers[CURLOPT_CUSTOMREQUEST] = $method;
         }
 
         $curl = curl_init();
@@ -162,6 +161,11 @@ class ModelExtensionPaymentVindi extends Model
                 'payment_company_code' => $this->request->post['payment_company_code'],
             ],
         ], 'POST');
+    }
+
+    public function cancelBill($bill_id)
+    {
+        return $this->api("bills/$bill_id", array(), 'DELETE');
     }
 
     public function getPaymentCompanies($payment_method)
