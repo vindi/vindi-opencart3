@@ -8,7 +8,7 @@ actor: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: http://vindi.opencart/
+            url: http://php.vindi/
             browser: chrome
             port: 9515
         - \Helper\Acceptance
