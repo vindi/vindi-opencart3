@@ -114,26 +114,41 @@ class ModelExtensionPaymentVindi extends Model
     public function findOrCreateCustomer()
     {
         $internal_customer_id = $this->customer->getId();
-        $customer_code  = $this->vindiCode($internal_customer_id);
-        $vindi_customer        = $this->api(
+        $customer_code        = $this->vindiCode($internal_customer_id);
+        $vindi_customer       = $this->api(
             "customers/", array(
-                'page'        => 1,
-                'query'       => "code=$customer_code"
+                'page'  => 1,
+                'query' => "code=$customer_code"
             )
         )['customers'];
 
         if (empty(reset($vindi_customer))) {
-            $vindi_customer    = $this->api(
+            $address_id = $this->customer->getAddressId();
+            $vindi_customer = $this->api(
                 'customers/', array(
-                    'name'    => $this->customer->getFirstName() . 
+                    'name'        => $this->customer->getFirstName() . 
                     ' ' . $this->customer->getLastName(),
-                    'email'   => $this->customer->getEmail(),
-                    'code'    => $customer_code,
+                    'email'       => $this->customer->getEmail(),
+                    'code'        => $customer_code,
+                    'address'     => $this->buildCustomerAddress($address_id)
                 ),
             'POST');
         }
-
         return reset($vindi_customer);
+    }
+
+    public function buildCustomerAddress($address_id)
+    {
+        $this->load->model('account/address');
+        $address = $this->model_account_address->getAddress($address_id);
+
+        return array(
+            'street'  => $address['address_1'],
+            'city'    => $address['city'],
+            'zipcode' => $address['postcode'],
+            'country' => $address['iso_code_2'],
+            'state'   => $address['zone_code'],
+        );
     }
 
     public function createBill(array $customer, $order)
