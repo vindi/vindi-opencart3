@@ -20,7 +20,16 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
     use Settings;
-    // use Api;
-    // use PaymentMethod;
-    // use Shop;
+    use Shop;
+    use Api;
+
+    public function isModuleConfigured()
+    {
+        return getenv('CONFIGURED') == true;
+    }
+
+    public function registeredUser()
+    {
+        return getenv('REGISTERED_USER') == true;
+    }
 }

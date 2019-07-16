@@ -15,22 +15,20 @@ trait Settings
 
     public function goToVindiSettings($I)
     {
-        $I->click('System');
-        $I->click('Configuration');
-
-        try {
-            $I->seeElement('#vindi_subscription_general_api_key');
-        } catch (Exception $e) {
-            $I->click('#vindi_subscription_general-head');
-        }
+        $I->click('#menu-extension');
+        $I->wait(1);
+        $I->click('Extensões', '#collapse2');
+        $I->selectOption('.form-control', 'Pagamentos (1)');
+        try { $I->click('.btn-success'); } catch (Exception $e) { }
+        $I->click('.fa-pencil');
     }
 
     public function setConnectionConfig($I)
     {
-        $I->goToAdminPanel($I);
-        $I->goToVindiSettings($I);
-        $I->fillField('#vindi_subscription_general_api_key', getenv('VINDI_API_KEY'));
-        $I->selectOption('#vindi_subscription_general_sandbox_mode', 'Sandbox');
-        $I->click('Save Config');
+        $I->selectOption('#select-status', 'Habilitado');
+        $I->fillField('#input-api-key', getenv('VINDI_API_KEY'));
+        $I->selectOption('#select-gateway', 'Sandbox (Test)');
+        $I->click('.btn-primary');
+        putenv("CONFIGURED=true");
     }
 }
