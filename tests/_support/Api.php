@@ -11,9 +11,8 @@ trait Api
      *
      * @return array|bool|mixed
      */
-    private function request($method, $endpoint, $body = [])
+    private function request($method = 'GET', $endpoint, $body = [])
     {
-        $method    = 'GET';
         $url = "https://sandbox-app.vindi.com.br/api/v1/$endpoint";
         $body = json_encode($body);
         $ch = curl_init();
@@ -38,18 +37,15 @@ trait Api
 
         curl_setopt_array($ch, $ch_options);
         $response = curl_exec($ch);
-        $body = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
 
         if (curl_errno($ch) || $response === false)
             return false;
 
+        $responseBody = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
         curl_close($ch);
-        $responseBody = json_decode($body, true);
+        $responseBody = json_decode($responseBody, true);
 
-        if (! $responseBody)
-            return false;
-
-        return $responseBody;
+        return $responseBody ? : false;
     }
 
 
