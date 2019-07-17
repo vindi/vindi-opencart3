@@ -3,7 +3,7 @@
 class ModelExtensionPaymentVindi extends Model
 {
     private $api_version = 'v1';
-    private $extension_version = '1.0.0';
+    private $extension_version = '1.1.0';
 
     public function api($api_method, $data = [], $method = 'GET')
     {

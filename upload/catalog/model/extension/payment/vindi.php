@@ -2,7 +2,7 @@
 
 class ModelExtensionPaymentVindi extends Model
 {
-    private $extension_version = '1.0.0';
+    private $extension_version = '1.1.0';
 
     public function getMethod()
     {
