@@ -26,6 +26,7 @@ trait Shop
     public function createNewUser($I)
     {
         $I->click('#button-account');
+        $I->wait(1);
         $I->fillField('#input-payment-firstname', 'Vindi');
         $I->fillField('#input-payment-lastname', 'OpenCart');
         $I->fillField('#input-payment-email', 'comunidade@vindi.com.br');
