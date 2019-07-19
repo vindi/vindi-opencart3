@@ -8,8 +8,6 @@ class VindiExtensionConfigCest
         if ($I->isModuleConfigured())
             return;
 
-        $I->goToAdminPanel($I);
-        $I->goToVindiSettings($I);
         $I->setConnectionConfig($I);
         $I->dontSeeElement('.alert-danger');
     }
