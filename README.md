@@ -3,10 +3,10 @@
 ##
 # Vindi - Opencart 3.x.x
 
-[![Build Status](https://semaphoreci.com/api/v1/vindi/vindi-opencart3/branches/master/shields_badge.svg)](https://semaphoreci.com/vindi/vindi-opencart3)
 [![Licença do Software][badge-license]](LICENSE)
 [![Última Versão no GitHub][badge-versionGitHub]][link-GitHub-release]
 [![GitHub commits desde a última Versão][badge-versionGitHub-commits]][link-GitHub-release]
+[![Build Status](https://semaphoreci.com/api/v1/vindi/vindi-opencart3/branches/master/shields_badge.svg)](https://semaphoreci.com/vindi/vindi-opencart3)
 
 # Descrição
 O **Vindi Opencart** oferece uma solução para pagamentos únicos com cartão de crédito. Basta ter [uma conta habilitada na Vindi](https://app.vindi.com.br/prospects/new), para começar a cobrar seus clientes.
