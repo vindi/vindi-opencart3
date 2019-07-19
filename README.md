@@ -1,8 +1,9 @@
-<p align="center"><img src ="https://vindi-blog.s3.amazonaws.com/wp-content/uploads/2017/10/logo-vindi-1.png" /></p>
+<p align="center"><img src ="https://theme.zdassets.com/theme_assets/494154/baff07fc755fee5daf2e4a0f42b4552cad1ed68e.png" width="30%" height="30%" /></p>
 
 ##
 # Vindi - Opencart 3.x.x
 
+[![Build Status](https://semaphoreci.com/api/v1/vindi/vindi-opencart3/branches/master/shields_badge.svg)](https://semaphoreci.com/vindi/vindi-opencart3)
 [![Licença do Software][badge-license]](LICENSE)
 [![Última Versão no GitHub][badge-versionGitHub]][link-GitHub-release]
 [![GitHub commits desde a última Versão][badge-versionGitHub-commits]][link-GitHub-release]
@@ -22,8 +23,7 @@ O **Vindi Opencart** oferece uma solução para pagamentos únicos com cartão d
 
 # Instalação
 #### Instalação a partir do código fonte do repositório GitHub
-1. Baixar o arquivo .zip
-1. Alterar a extenção do arquivo para .ocmod.zip
+1. Baixar o arquivo [.ocmod.zip](https://github.com/vindi/vindi-opencart3/releases/latest/download/1.1.0/vindi.ocmod.zip)
 1. Acessar a seção do Instalador de Extensões do Opencart
 1. Realizar o envio do arquivo .ocmod.zip no instalador do Opencart
 
