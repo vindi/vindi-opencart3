@@ -8,7 +8,7 @@ trait Settings
 
         try {
             $I->fillField('#input-username', 'admin');
-            $I->fillField('#input-password', 'admin123');
+            $I->fillField('#input-password', 'password123');
             $I->click('Acessar');
         } catch (Exception $e) { }
     }
@@ -25,6 +25,8 @@ trait Settings
 
     public function setConnectionConfig($I)
     {
+        $this->goToAdminPanel($I);
+        $this->goToVindiSettings($I);
         $I->selectOption('#select-status', 'Habilitado');
         $I->fillField('#input-api-key', getenv('VINDI_API_KEY'));
         $I->selectOption('#select-gateway', 'Sandbox (Test)');

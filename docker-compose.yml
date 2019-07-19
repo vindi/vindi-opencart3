@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+    opencart_db:
+        image: vindi/mysql_opencart3
+        container_name: opencart_db
+        ports:
+        - "3306"
+    opencart_web:
+        image: vindi/apache_opencart3
+        container_name: opencart_web
+        depends_on:
+        - opencart_db
+        ports:
+        - "80:80"
+        links:
+        - opencart_db:mysql
+networks:
+    default:
+        external:
+            name: webproxy

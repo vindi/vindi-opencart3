@@ -58,6 +58,18 @@ Obs.: Gostamos muito do [PSR-1](https://www.php-fig.org/psr/psr-1/) e [PSR-2](ht
 
 4. [Abra um Pull Request](https://help.github.com/articles/using-pull-requests/) com uma motivação e solução proposta bem claras.
 
+# Qualidade do código
+Para garantir o controle da qualidade do código, disponibilizamos alguns testes via [Codecept](https://codecept.io/) em [/tests](https://github.com/vindi/vindi-opencart3/tree/master/tests).
+ 
+#### Se você nunca utilizou o composer, seja bem vindo :tada: :smile: [Aqui está o link do composer](https://getcomposer.org/download/), depois instale as dependências do composer.json.
+
+#### Se você nunca rodou testes com Codeception, seja bem vindo :tada: :smile: [Aqui está o link da documentação oficial](https://codeception.com/docs/01-Introduction).
+ 
+## Rodando os Testes
+
+``` bash
+composer test
+```
 
 ## Revisão da Comunidade
 
