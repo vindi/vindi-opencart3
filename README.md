@@ -23,7 +23,7 @@ O **Vindi Opencart** oferece uma solução para pagamentos únicos com cartão d
 
 # Instalação
 #### Instalação a partir do código fonte do repositório GitHub
-1. Baixar o arquivo [.ocmod.zip](https://github.com/vindi/vindi-opencart3/releases/latest/download/1.1.0/vindi.ocmod.zip)
+1. Baixar o arquivo [.ocmod.zip](https://github.com/vindi/vindi-opencart3/releases/latest/download/vindi.ocmod.zip)
 1. Acessar a seção do Instalador de Extensões do Opencart
 1. Realizar o envio do arquivo .ocmod.zip no instalador do Opencart
 
