@@ -29,5 +29,3 @@ blocks:
         - name: Test
           commands:
             - composer test
-      secrets:
-        - name: vindi_sandbox_api_key
