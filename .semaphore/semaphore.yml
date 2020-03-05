@@ -15,7 +15,7 @@ blocks:
             - sudo sh -c "echo '127.0.0.1 vindi.opencart' >> /etc/hosts"
             - composer install
             - docker network create webproxy && docker-compose up -d
-            - chromedriver --whitelisted-ips=0.0.0.0,127.0.0.1 --url-base=/wd/hub & sleep 10
+            # - chromedriver --whitelisted-ips=0.0.0.0,127.0.0.1 --url-base=/wd/hub & sleep 10
             - cd upload && zip -r vindi.zip ./* && cd ~/vindi-opencart3
             - 'docker cp upload/vindi.zip opencart_web:/var/www/html && docker exec -it opencart_web unzip vindi.zip'
             - cache store
