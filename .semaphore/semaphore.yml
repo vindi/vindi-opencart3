@@ -26,6 +26,7 @@ blocks:
           - checkout
           - cache restore
           - ls -la
+          - ls -la upload
           # - composer install
           # - chromedriver --url-base=/wd/hub & sleep 10
           # - cd upload && zip -r vindi.zip ./* && cd ~/vindi-opencart3
