@@ -25,7 +25,6 @@ blocks:
           - chromedriver --url-base=/wd/hub & sleep 10
           - cd upload && zip -r vindi.zip ./* && cd ~/vindi-opencart3
           - docker cp upload/vindi.zip opencart_web:/var/www/html && docker exec -it opencart_web unzip vindi.zip
-          - wget http://127.0.0.1:9515
       jobs:
         - name: Test
           commands:
