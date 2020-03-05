@@ -25,6 +25,7 @@ blocks:
         commands:
           - checkout
           - cache restore
+          - composer install
           - chromedriver --url-base=/wd/hub & sleep 10
           - cd upload && zip -r vindi.zip ./* && cd ~/vindi-opencart3
           - docker cp upload/vindi.zip opencart_web:/var/www/html && docker exec -it opencart_web unzip vindi.zip
