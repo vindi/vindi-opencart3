@@ -28,5 +28,6 @@ blocks:
       jobs:
         - name: Test
           commands:
-            - 'if [ $SEMAPHORE_GIT_BRANCH = ''master'' ]; then  composer test acceptance; else true; fi'
             - composer test
+      secrets:
+        - name: vindi_sandbox_api_key
