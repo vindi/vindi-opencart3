@@ -27,6 +27,7 @@ blocks:
         commands:
           - checkout
           - cache restore
+          - docker network create webproxy && docker-compose up -d
           - ls -la
           - ls -la upload
           # - composer install
