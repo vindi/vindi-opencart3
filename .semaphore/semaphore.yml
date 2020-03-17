@@ -1,0 +1,31 @@
+version: v1.0
+name: vindi-opencart3
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Setup
+    task:
+      jobs:
+        - name: Setup
+          commands:
+            - checkout
+            - cache restore
+            - sudo sh -c "echo '127.0.0.1 vindi.opencart' >> /etc/hosts"
+            - composer install
+            - docker network create webproxy && docker-compose up -d
+            - cd upload && zip -r vindi.zip ./* && cd ~/vindi-opencart3
+            - 'docker cp upload/vindi.zip opencart_web:/var/www/html && docker exec -it opencart_web unzip vindi.zip'
+            - cache store
+  - name: Test
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - chromedriver --whitelisted-ips=127.0.0.1 --url-base=/wd/hub & sleep 10
+      jobs:
+        - name: Test
+          commands:
+            - composer test
